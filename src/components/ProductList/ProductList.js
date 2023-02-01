@@ -10,15 +10,14 @@ import STATUS from "../../store/constants";
 const ProductList = () => {
   const dispatch = useDispatch();
   const { productList, loading, error } = useSelector((state) => state.product);
-  console.log(productList);
 
   useEffect(() => {
     dispatch(fetchProducts());
   }, []);
 
-  const handleProduct = () => {};
+  
   const renderItem = ({ item }) => {
-    return <ProductCard item={item} hanldeProduct={handleProduct} />;
+    return <ProductCard item={item}  />;
   };
   const renderMovieList = () => {
     if (loading === STATUS.PENDING) return <Text>Loading</Text>;
@@ -26,7 +25,7 @@ const ProductList = () => {
 
     return (
       <FlatList
-        data={productList[0]}
+        data={productList}
         renderItem={renderItem}
         keyExtractor={(item) => item.Title}
       />

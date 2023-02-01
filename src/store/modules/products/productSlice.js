@@ -7,29 +7,32 @@ const initialState = {
   error: null,
 };
 
-export const fetchProducts = createAsyncThunk("movies/fetchMovies", async () => {
-  const options = {
-    method: "GET",
-    headers: {
-      "X-RapidAPI-Key": "c6272106eamsh57e731f9bb54416p121c1ejsn4dfc648bd5d1",
-      "X-RapidAPI-Host": "mdblist.p.rapidapi.com",
-    },
-  };
+export const fetchProducts = createAsyncThunk(
+  "movies/fetchMovies",
+  async () => {
+    const options = {
+      method: "GET",
+      headers: {
+        "X-RapidAPI-Key": "c6272106eamsh57e731f9bb54416p121c1ejsn4dfc648bd5d1",
+        "X-RapidAPI-Host": "mdblist.p.rapidapi.com",
+      },
+    };
 
-  const data = await fetch(
-    "https://dummyjson.com/products",
-    options
-  ).then((data) => data.json());
-  return data;
-});
+    const data = await fetch("https://dummyjson.com/products", options).then(
+      (data) => data.json()
+    );
+    return data;
+  }
+);
 
 export const productSlice = createSlice({
-  name: 'products',
+  name: "products",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchProducts.fulfilled, (state, action) => {
-      state.productList.push(action.payload.products);
+      console.log('abhi',action.payload.products)
+      state.productList = action.payload.products;
       state.loading = STATUS.SUCCESS;
     });
     builder.addCase(fetchProducts.rejected, (state, action) => {

@@ -1,6 +1,7 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import TabStack from "../TabStack";
+import DetailScreen from "../../screens/DetailScreen";
 import { useTheme } from "styled-components/native";
 
 const HomeStack = () => {
@@ -25,6 +26,7 @@ const HomeStack = () => {
           headerShown: false,
         }}
       />
+      <Stack.Screen name="DetailScreen" component={DetailScreen} />
     </Stack.Navigator>
   );
 };

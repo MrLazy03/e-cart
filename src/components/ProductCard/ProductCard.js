@@ -1,7 +1,10 @@
 import { View, Image, TouchableOpacity, StyleSheet } from "react-native";
 import React from "react";
+import { useDispatch } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
 import { Text, Title as TitleText } from "../../styledComponents/text";
 import StarRating from "react-native-star-rating";
+import { addToCart } from "../../store/modules/cartItems/cartSlice";
 
 const ProductCard = (props) => {
   const {
@@ -18,10 +21,14 @@ const ProductCard = (props) => {
       stock,
       thumbnail,
     },
-    handleProduct,
   } = props;
 
-  const handleAddToCard = () => {};
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const handleAddToCard = () => {
+    console.log("nks");
+    dispatch(addToCart({ productId: id }));
+  };
 
   const renderProductImage = () => {
     return (
@@ -40,14 +47,33 @@ const ProductCard = (props) => {
   };
 
   const renderProductRating = () => {
-    // return (
-    //   <StarRating
-    //     disabled={false}
-    //     maxStars={5}
-    //     rating={rating}
-    //     // selectedStar={(rating) }
-    //   />
-    // );
+    return (
+      <View style={styles.StarRating}>
+        <StarRating
+          disabled={false}
+          maxStars={5}
+          rating={rating}
+          fullStarColor={"#051526"}
+          emptyStarColor={"skyblue"}
+          starSize={20}
+        />
+      </View>
+    );
+  };
+
+  const renderAddToCartButton = () => {
+    return (
+      <TouchableOpacity
+        onPress={handleAddToCard}
+        style={styles.buttonContainer}
+      >
+        <Text style={styles.buttonText}>Add To Cart</Text>
+      </TouchableOpacity>
+    );
+  };
+
+  const handleProductClick = () => {
+    navigation.navigate("DetailScreen", { productId: id });
   };
 
   const renderProductDetails = () => {
@@ -79,19 +105,8 @@ const ProductCard = (props) => {
     );
   };
 
-  const renderAddToCartButton = () => {
-    return (
-      <TouchableOpacity
-        onPress={handleAddToCard}
-        style={styles.buttonContainer}
-      >
-        <Text style={styles.buttonText}>Add To Cart</Text>
-      </TouchableOpacity>
-    );
-  };
-
   return (
-    <TouchableOpacity onPress={handleProduct} style={styles.container}>
+    <TouchableOpacity onPress={handleProductClick} style={styles.container}>
       {thumbnail && renderProductImage()}
       {renderProductDetails()}
     </TouchableOpacity>
@@ -123,12 +138,19 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 8,
   },
+
   buttonText: {
     fontSize: 14,
     color: "#fff",
     fontWeight: "bold",
     alignSelf: "center",
     textTransform: "uppercase",
+  },
+
+  StarRating: {
+    paddingVertical: 5,
+    paddingHorizontal: 8,
+    marginHorizontal: 8,
   },
 });
 
